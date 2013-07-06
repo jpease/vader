@@ -1,7 +1,10 @@
 vader
 =====
 
-Vagrant Ansible Development Environment for Ruby.
+*V*agrant *A*nsible *D*evelopment *E*nvironment for *R*uby.
+
+Idea:
+Spin up a stack for development that is similar to what might be used in production.
 
 Prerequisites:
 * [Vagrant](https://github.com/mitchellh/vagrant)
@@ -9,7 +12,7 @@ Prerequisites:
 * [VMWare Fusion](https://www.vmware.com/products/fusion/overview.html) - Could be altered for VirtualBox
 * [VMWare Fusion Plugin for Vagrant](http://www.vagrantup.com/vmware).
 
-Current stack: 
+Right now the stack just consists of:
 
 * NGINX
 * Haproxy

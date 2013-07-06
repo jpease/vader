@@ -14,8 +14,6 @@ Vagrant.configure("2") do |config|
       v.vmx['displayName'] = 'web'
       v.vmx["numvcpus"] = '1'
       v.vmx['memsize'] = '512'
-      #v.vmx['sharedFolder.maxNum'] = '100'
-      #v.vmx['sharedFolder.option'] = 'alwaysEnabled'
     end
 
     web_config.vm.provision :ansible do |ansible|

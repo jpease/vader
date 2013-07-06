@@ -9,8 +9,9 @@ Right now the stack just consists of:
 
 * NGINX
 * Haproxy
-* Ruby 2.0 (via rbenv & ruby-build)
-* Rails 4.0
+* App Server
+ * Ruby 2.0 (via rbenv & ruby-build)
+ * Rails 4.0
 
 ### Installation             
 
@@ -64,3 +65,24 @@ And...
 
 * [HAProxy Stats](http://haproxy.dev/haproxy?admin)
 * [Rails Test](http://rails-test.dev)
+
+### The Setup
+
+#### NGINX
+
+* 192.168.2.10
+* Listening on port 80
+* At the moment, all requests sent on to HAProxy
+
+#### HAProxy
+
+* 192.168.2.20
+* Listening on port 80 & 8080
+* Port 80 services HAProxy's stats UI
+* Port 8080 is balanced out to the 2 app servers.
+
+#### App Server
+
+* 192.168.2.100 & 192.168.2.101
+* Right now just webrick for proof of concept
+* Webrick listens on port 3000

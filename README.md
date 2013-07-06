@@ -10,7 +10,7 @@ Current stack:
 
 * NGINX
 * Haproxy
-* Ruby
+* Ruby (Ruby 2.0, Rails 4.0)
 
 ### Installation             
 

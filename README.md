@@ -1,16 +1,9 @@
 vader
 =====
 
-**V**agrant **A**nsible **D**evelopment **E**nvironment for **R**uby.
+#### **V**agrant **A**nsible **D**evelopment **E**nvironment for **R**uby.
 
-Idea:
 Spin up a stack for development that is similar to what might be used in production.
-
-Prerequisites:
-* [Vagrant](https://github.com/mitchellh/vagrant)
-* [Ansible](https://github.com/ansible/ansible)
-* [VMWare Fusion](https://www.vmware.com/products/fusion/overview.html) - Could be altered for VirtualBox
-* [VMWare Fusion Plugin for Vagrant](http://www.vagrantup.com/vmware).
 
 Right now the stack just consists of:
 
@@ -20,6 +13,12 @@ Right now the stack just consists of:
 * Rails 4.0
 
 ### Installation             
+
+#### Prerequisites
+* [Vagrant](https://github.com/mitchellh/vagrant)
+* [Ansible](https://github.com/ansible/ansible)
+* [VMWare Fusion](https://www.vmware.com/products/fusion/overview.html) - Could be altered for VirtualBox
+* [VMWare Fusion Plugin for Vagrant](http://www.vagrantup.com/vmware).
 
 #### Clone vader
 

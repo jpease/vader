@@ -27,7 +27,7 @@ Clone the repository into a directory where you want to keep your project files.
 
 #### Setup Hosts
 
-Edit `/etc/hosts`:
+Edit `/etc/hosts` on your local development machine:
 
     192.168.2.10    haproxy.dev
     192.168.2.10    rails-test.dev

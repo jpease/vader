@@ -16,7 +16,7 @@ Right now the stack just consists of:
 
 * NGINX
 * Haproxy
-* Ruby 2.0
+* Ruby 2.0 (via rbenv & ruby-build)
 * Rails 4.0
 
 ### Installation             

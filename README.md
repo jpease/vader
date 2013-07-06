@@ -1,7 +1,7 @@
 vader
 =====
 
-*V*agrant *A*nsible *D*evelopment *E*nvironment for *R*uby.
+**V**agrant **A**nsible **D**evelopment **E**nvironment for **R**uby.
 
 Idea:
 Spin up a stack for development that is similar to what might be used in production.

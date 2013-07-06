@@ -1,0 +1,3 @@
+---
+- name: 'Rehash rbenv'
+  command: rbenv rehash 

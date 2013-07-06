@@ -1,0 +1,33 @@
+---
+- name: 'Apt: Update Repositories'
+  apt:  update_cache=yes cache_valid_time=3600
+
+# This will break VMWare Tools, which will need to be recompiled.
+#- name: 'Update: apt safe-upgrade'
+#  apt: upgrade=safe
+
+- name: 'build-essential: Present'
+  apt: pkg=build-essential state=latest
+
+#- name: 'chef: Absent'
+#  apt: pkg=chef state=absent
+#  notify: 'Stop chef'
+
+#- name: 'whoopsie: Absent'
+#  apt: pkg=whoopsie state=absent
+#  notify: 'Stop whoopsie'
+
+#- name: 'consolekit: Absent'
+#  apt: pkg=consolekit state=absent
+
+- name: 'git: Present'
+  apt: pkg=git state=latest
+
+- name: 'ntp: Present'
+  apt: pkg=ntp state=present
+
+#- name: 'Configure: SSH requires key based login'
+#  lineinfile: dest=/etc/ssh/sshd_config
+#              regexp="PasswordAuthentication"
+#              line="PasswordAuthentication no"
+#  notify: 'Restart SSH'

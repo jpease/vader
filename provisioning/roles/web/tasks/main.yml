@@ -1,0 +1,36 @@
+--- 
+  # Required for apt_repository
+- name: 'NGINX: Present python-software-properties'
+  apt:  pkg='python-software-properties' state=present
+
+- name: 'NGINX: Add PPA'
+  apt_repository: repo=ppa:nginx/stable state=present
+  tags: nginx
+
+- name: 'NGINX: Version 1.4.1 Present'
+  apt:  pkg=nginx=1.4.1-1ppa1~precise state=present
+  tags: nginx
+
+- name: 'NGINX: Started'
+  service: name=nginx state=started 
+  ignore_errors: yes
+
+- name: 'NGINX: Set www-data As Owner For Logs'
+  file: path=/var/log/nginx state=directory group=www-data owner=www-data recurse=yes
+
+- name: 'NGINX: nginx.conf Present'
+  template: src='nginx.conf.j2' dest='/etc/nginx/nginx.conf' backup=yes
+
+- name: 'NGINX: haproxy Server Config Present'
+  template: src='haproxy.j2' dest='/etc/nginx/sites-available/haproxy' backup=yes
+
+- name: 'NGINX: haproxy Server Config'
+  file: src=/etc/nginx/sites-available/haproxy dest=/etc/nginx/sites-enabled/haproxy state=link
+
+- name: 'NGINX: Rails Test App Server Config Present'
+  template: src='rails_server.j2' dest='/etc/nginx/sites-available/rails_server' backup=yes
+
+- name: 'NGINX: Link Rails Test App Server Config'
+  file: src=/etc/nginx/sites-available/rails_server dest=/etc/nginx/sites-enabled/rails_server state=link
+  notify:
+    - 'Restart nginx'

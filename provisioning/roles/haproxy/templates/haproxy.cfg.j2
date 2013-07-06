@@ -1,0 +1,28 @@
+global
+    daemon
+
+defaults
+    mode http
+    stats enable
+    stats hide-version
+    stats uri /haproxy?admin
+    stats refresh 5s
+    balance roundrobin
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
+frontend stats
+    bind *:80
+
+frontend http-in
+    bind *:8080
+    default_backend ruby_servers
+
+backend ruby_servers
+{% for backend in groups['app_ruby'] %}
+    server {{ hostvars[backend]['ansible_hostname'] }} {{ hostvars[backend]['ansible_eth0']['ipv4']['address'] }}:3000 check port 3000
+{% endfor %}
+    option httpchk HEAD / HTTP/1.0
+
+

@@ -1,0 +1,9 @@
+---
+- name: 'Stop chef'
+  service: name=chef-client state=stopped
+
+- name: 'Stop whoopsie'
+  service: name=whoopsie state=stopped
+
+- name: 'Restart SSH'
+  service: name=ssh state=restarted 

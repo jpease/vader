@@ -1,0 +1,99 @@
+--- 
+#- name: "Present: rbenv depdendencies"
+#  apt: pkg=$item state=latest install_recommends=no
+#  with_items:
+#    - libcurl4-openssl-dev
+#    - libmysqlclient-dev
+#    - libreadline5-dev
+#    - libssl-dev
+#    - libxml2-dev
+#    - libxslt1-dev
+#    - zlib1g-dev
+
+- name: "Rails: Depdendencies present"
+  apt: pkg=$item state=latest install_recommends=no
+  with_items:
+    - sqlite3
+    - libsqlite3-dev
+    - nodejs # For execjs: https://github.com/sstephenson/execjs
+
+- name: 'rbenv: Update git repo'
+  git: repo=git://github.com/sstephenson/rbenv.git dest=$rbenv_root version=v0.4.0
+
+- name: 'rbenv: Permissions set' 
+  # If left as root, rehash will always fail with: 
+  # rbenv: cannot rehash: /usr/local/rbenv/shims/.rbenv-shim exists
+  file: path=${rbenv_root}/shims/ mode=0777 state=directory
+
+- name: 'rbenv: Present in PATH'
+  file: path=/usr/local/bin/rbenv src=${rbenv_root}/bin/rbenv state=link
+
+- name: 'rbenv: Add initialization to profile'
+  template: src=rbenv.sh.j2 dest=/etc/profile.d/rbenv.sh owner=root group=root mode=0755
+
+- name: 'ruby-build: Present'
+  command: test -x /usr/local/bin/ruby-build
+  register: rbuild_present
+  ignore_errors: yes
+
+- name: 'ruby-build: Pre-install - Create temporary directory'
+  command: mktemp -d
+  register: tempdir
+  when_failed: $rbuild_present
+
+- name: 'ruby-build: Pre-install - Clone git repo'
+  git: repo=git://github.com/sstephenson/ruby-build.git dest=${tempdir.stdout}/ruby-build
+  when_failed: $rbuild_present
+
+- name: 'ruby-build: Install'
+  command: ./install.sh chdir=${tempdir.stdout}/ruby-build
+  when_failed: $rbuild_present
+
+- name: 'ruby-build: Post-install - Remove temporary directory'
+  file: path=${tempdir.stdout} state=absent
+  when_failed: $rbuild_present
+
+- name: 'Ruby $ruby_version: Present'
+  shell: RBENV_ROOT=${rbenv_root} rbenv versions | grep $ruby_version
+  register: ruby_installed
+  ignore_errors: yes
+
+- name: 'Ruby $ruby_version: Install'
+  shell: RBENV_ROOT=${rbenv_root} rbenv install $ruby_version
+  when_failed: $ruby_installed
+
+- name: 'rbenv: Set Ruby $ruby_version as global default'
+  shell: RBENV_ROOT=${rbenv_root} rbenv global $ruby_version
+  notify: 'Rehash rbenv'
+  when_failed: $ruby_installed
+
+- name: 'rbenv: Custom gemrc present'
+  copy: src=gemrc dest=/root/.gemrc owner=root group=root mode=0644
+
+- name: 'RubyGems: Present in PATH' # Makes Ansible happier 
+  file: path=/usr/local/bin/gem src=/usr/local/rbenv/shims/gem state=link
+
+- name: 'RubyGems: Update'
+  command: 'gem update --system'
+
+- name: 'Rake: Present'
+  # Without force, this will hang waiting for permission to overwrite the existing executable.
+  command: 'sudo gem install rake --force'
+  notify: 'Rehash rbenv'
+  tags: ruby
+
+- name: 'Bundler: Present'
+  gem: name=bundler version=1.3.5 state=present
+  notify: 'Rehash rbenv'
+  tags: ruby
+
+- name: 'Bundler: ~/.bundle/config Present' 
+  file: path=/home/vagrant/.bundle/ state=directory
+
+- name: 'Bundler: Custom .bundle/config present'
+  copy: src=bundle.config dest=/home/vagrant/.bundle/config 
+
+- name: 'Rails: Present'
+  gem: name=rails version=4.0.0 state=present
+  notify: 'Rehash rbenv'
+  tags: ruby

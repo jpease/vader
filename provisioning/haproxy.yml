@@ -1,0 +1,13 @@
+---
+- hosts: app_ruby
+  tasks: 
+    - name : 'Facts: Fake task to gather facts on app servers'
+      action: debug msg="done"
+
+- hosts: haproxy
+  user: vagrant 
+  sudo: yes
+
+  roles:
+     - common
+     - haproxy

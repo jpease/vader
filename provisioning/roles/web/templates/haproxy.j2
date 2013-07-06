@@ -1,0 +1,14 @@
+upstream haproxy_server {
+  server 192.168.2.20:80;
+}
+
+server {
+  listen 80;
+  server_name haproxy.dev;
+
+  location / {
+    proxy_pass        http://haproxy_server;
+    break;
+  }
+
+}

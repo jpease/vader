@@ -56,5 +56,5 @@ And...
 
 #### Take A Peek
 
-* [HAProxy Stats](http://haproxy.dev?haproxy?admin)
+* [HAProxy Stats](http://haproxy.dev/haproxy?admin)
 * [Rails Test](http://rails-test.dev)

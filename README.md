@@ -4,7 +4,10 @@ vader
 Vagrant Ansible Development Environment for Ruby.
 
 Prerequisites:
-* I'm using [VMWare Fusion](https://www.vmware.com/products/fusion/overview.html) and the [VMWare Fusion Plugin for Vagrant](http://www.vagrantup.com/vmware).
+* [Vagrant](https://github.com/mitchellh/vagrant)
+* [Ansible](https://github.com/ansible/ansible)
+* [VMWare Fusion](https://www.vmware.com/products/fusion/overview.html) - Could be altered for VirtualBox
+* [VMWare Fusion Plugin for Vagrant](http://www.vagrantup.com/vmware).
 
 Current stack: 
 

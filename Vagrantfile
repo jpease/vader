@@ -18,7 +18,6 @@ Vagrant.configure("2") do |config|
 
     web_config.vm.provision :ansible do |ansible|
       ansible.playbook = "provisioning/webservers.yml"
-      ansible.inventory_file = "provisioning/ansible_hosts"
     end
   end
 
@@ -37,7 +36,6 @@ Vagrant.configure("2") do |config|
 
     haproxy_config.vm.provision :ansible do |ansible|
       ansible.playbook = "provisioning/haproxy.yml"
-      ansible.inventory_file = "provisioning/ansible_hosts"
     end
   end
  
@@ -55,7 +53,7 @@ app_hosts = {
       app_ruby_config.vm.box = "ubuntu12.04"
       app_ruby_config.vm.box_url = "http://files.vagrantup.com/precise64_vmware.box"
       app_ruby_config.vm.network :private_network, ip: ip
-      app_ruby_config.vm.network :forwarded_port, guest: port, host: 3000
+      app_ruby_config.vm.network :forwarded_port, guest: 3000, host: port 
       app_ruby_config.vm.synced_folder "../", "/srv/www"
 
       app_ruby_config.vm.provider "vmware_fusion" do |v|
@@ -66,7 +64,6 @@ app_hosts = {
 
       app_ruby_config.vm.provision :ansible do |ansible|
         ansible.playbook = "provisioning/app_ruby.yml"
-        ansible.inventory_file = "provisioning/ansible_hosts"
       end
     end
   end

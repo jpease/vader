@@ -21,6 +21,11 @@ Right now the stack just consists of:
 * [VMWare Fusion](https://www.vmware.com/products/fusion/overview.html) - Could be altered for VirtualBox
 * [VMWare Fusion Plugin for Vagrant](http://www.vagrantup.com/vmware).
 
+#### Works For Me
+* OS X 10.8.4
+* Vagrant 1.3.1
+* Ansible 1.3 (master ad595eadea)
+
 #### Clone vader
 
 Clone the repository into a directory where you want to keep your project files.  I place it in `~/src`.

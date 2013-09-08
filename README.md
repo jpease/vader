@@ -13,18 +13,18 @@ Right now the stack just consists of:
  * Ruby 2.0 (via rbenv & ruby-build)
  * Rails 4.0
 
-### Installation             
-
-#### Prerequisites
-* [Vagrant](https://github.com/mitchellh/vagrant)
-* [Ansible](https://github.com/ansible/ansible)
-* [VMWare Fusion](https://www.vmware.com/products/fusion/overview.html) - Could be altered for VirtualBox
-* [VMWare Fusion Plugin for Vagrant](http://www.vagrantup.com/vmware).
-
-#### Works For Me
+### Tested To Work On
 * OS X 10.8.4
 * Vagrant 1.3.1
 * Ansible 1.3 (master ad595eadea)
+
+### Installation             
+
+#### Prerequisites
+* [Vagrant](https://github.com/mitchellh/vagrant) 
+* [Ansible](https://github.com/ansible/ansible)
+* [VMWare Fusion](https://www.vmware.com/products/fusion/overview.html) - Could be altered for VirtualBox
+* [VMWare Fusion Plugin for Vagrant](http://www.vagrantup.com/vmware).
 
 #### Clone vader
 

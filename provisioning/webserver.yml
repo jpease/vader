@@ -1,0 +1,11 @@
+---
+- hosts: webserver
+  user: vagrant 
+  sudo: yes
+
+  vars:
+    - nginx_version: 1.4.7-1+precise0
+
+  roles:
+     - common
+     - webserver

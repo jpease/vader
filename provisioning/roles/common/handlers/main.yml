@@ -1,4 +1,7 @@
 ---
+- name: 'Update Apt Cache'
+  apt:  update_cache=yes
+
 - name: 'Stop chef'
   service: name=chef-client state=stopped
 

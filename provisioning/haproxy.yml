@@ -8,6 +8,9 @@
   user: vagrant 
   sudo: yes
 
+  vars:
+    - haproxy_version: 1.4.25-1ppa1~precise
+
   roles:
      - common
      - haproxy

@@ -1,71 +1,60 @@
 --- 
-#- name: "Present: rbenv depdendencies"
-#  apt: pkg=$item state=latest install_recommends=no
-#  with_items:
-#    - libcurl4-openssl-dev
-#    - libmysqlclient-dev
-#    - libreadline5-dev
-#    - libssl-dev
-#    - libxml2-dev
-#    - libxslt1-dev
-#    - zlib1g-dev
-
 - name: "Rails: Depdendencies present"
-  apt: pkg=$item state=latest install_recommends=no
+  apt: pkg={{ item }} state=latest install_recommends=no
   with_items:
     - sqlite3
     - libsqlite3-dev
     - nodejs # For execjs: https://github.com/sstephenson/execjs
 
 - name: 'rbenv: Update git repo'
-  git: repo=git://github.com/sstephenson/rbenv.git dest=$rbenv_root version=v0.4.0
+  git: repo=git://github.com/sstephenson/rbenv.git dest={{ rbenv_root }} version={{ rbenv_version }}
 
 - name: 'rbenv: Permissions set' 
   # If left as root, rehash will always fail with: 
   # rbenv: cannot rehash: /usr/local/rbenv/shims/.rbenv-shim exists
-  file: path=${rbenv_root}/shims/ mode=0777 state=directory
+  file: path={{ rbenv_root }}/shims/ mode=0777 state=directory
 
 - name: 'rbenv: Present in PATH'
-  file: path=/usr/local/bin/rbenv src=${rbenv_root}/bin/rbenv state=link
+  file: path=/usr/local/bin/rbenv src={{ rbenv_root }}/bin/rbenv state=link
 
 - name: 'rbenv: Add initialization to profile'
   template: src=rbenv.sh.j2 dest=/etc/profile.d/rbenv.sh owner=root group=root mode=0755
 
 - name: 'ruby-build: Present'
-  command: test -x /usr/local/bin/ruby-build
+  shell: "[ -f /usr/local/bin/ruby-build ] && echo 'Found' || echo ''"
   register: rbuild_present
   ignore_errors: yes
 
 - name: 'ruby-build: Pre-install - Create temporary directory'
-  command: mktemp -d
+  command: mktemp -d 
   register: tempdir
-  when_failed: $rbuild_present
+  when: (not rbuild_present.stdout)
 
 - name: 'ruby-build: Pre-install - Clone git repo'
-  git: repo=git://github.com/sstephenson/ruby-build.git dest=${tempdir.stdout}/ruby-build
-  when_failed: $rbuild_present
+  git: repo=git://github.com/sstephenson/ruby-build.git dest={{ tempdir.stdout }}/ruby-build 
+  when: (not rbuild_present.stdout)
 
 - name: 'ruby-build: Install'
-  command: ./install.sh chdir=${tempdir.stdout}/ruby-build
-  when_failed: $rbuild_present
+  command: ./install.sh chdir={{ tempdir.stdout }}/ruby-build
+  when: (not rbuild_present.stdout)
 
 - name: 'ruby-build: Post-install - Remove temporary directory'
-  file: path=${tempdir.stdout} state=absent
-  when_failed: $rbuild_present
+  file: path={{ tempdir.stdout }} state=absent 
+  when: (not rbuild_present.stdout)
 
-- name: 'Ruby $ruby_version: Present'
-  shell: RBENV_ROOT=${rbenv_root} rbenv versions | grep $ruby_version
+- name: 'Ruby {{ ruby_version }}: Present'
+  shell: RBENV_ROOT={{ rbenv_root }} rbenv versions | grep {{ ruby_version }}
   register: ruby_installed
   ignore_errors: yes
 
-- name: 'Ruby $ruby_version: Install'
-  shell: RBENV_ROOT=${rbenv_root} rbenv install $ruby_version
-  when_failed: $ruby_installed
+- name: 'Ruby {{ ruby_version }}: Install'
+  shell: RBENV_ROOT={{ rbenv_root }} rbenv install {{ ruby_version }}
+  when: (not ruby_installed.stdout)
 
-- name: 'rbenv: Set Ruby $ruby_version as global default'
-  shell: RBENV_ROOT=${rbenv_root} rbenv global $ruby_version
+- name: 'rbenv: Set Ruby {{ ruby_version }} as global default'
+  shell: RBENV_ROOT={{ rbenv_root }} rbenv global {{ ruby_version }}
   notify: 'Rehash rbenv'
-  when_failed: $ruby_installed
+  when: (not ruby_installed.stdout)
 
 - name: 'rbenv: Custom gemrc present'
   copy: src=gemrc dest=/root/.gemrc owner=root group=root mode=0644
@@ -83,7 +72,8 @@
   tags: ruby
 
 - name: 'Bundler: Present'
-  gem: name=bundler version=1.3.5 state=present
+  gem: name=bundler version={{ bundler_version }} state=present
+       user_install=no # Because otherwise it doesn't end up where rbenv expects it
   notify: 'Rehash rbenv'
   tags: ruby
 
@@ -94,6 +84,7 @@
   copy: src=bundle.config dest=/home/vagrant/.bundle/config 
 
 - name: 'Rails: Present'
-  gem: name=rails version=4.0.0 state=present
+  gem: name=rails version={{ rails_version }} state=present
+       user_install=no # Because otherwise it doesn't end up where rbenv expects it
   notify: 'Rehash rbenv'
   tags: ruby

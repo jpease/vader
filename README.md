@@ -1,22 +1,25 @@
 vader
 =====
 
-#### **V**agrant **A**nsible **D**evelopment **E**nvironment for **R**uby.
+#### Vagrant
+#### Ansible
+#### Development
+#### Environment for
+#### Ruby.
 
 Spin up a stack for development that is similar to what might be used in production.
 
 Right now the stack just consists of:
 
-* NGINX
-* Haproxy
-* App Server
- * Ruby 2.0 (via rbenv & ruby-build)
- * Rails 4.0
+* NGINX 1.4.7
+* Haproxy 1.4.25
+* Ruby 2.1 (via rbenv & ruby-build)
+* Rails 4.1
 
 ### Tested To Work On
-* OS X 10.8.4
-* Vagrant 1.3.1
-* Ansible 1.3 (master ad595eadea)
+* OS X 10.9.2
+* Vagrant 1.5.2
+* Ansible 1.5 (master 29110c31ea)
 
 ### Installation             
 

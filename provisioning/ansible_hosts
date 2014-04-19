@@ -1,8 +1,11 @@
-[webservers]
+[webserver]
 192.168.2.10
 
 [haproxy]
 192.168.2.20
+
+[postgres]
+192.168.2.30
 
 [app_ruby]
 app_ruby_1 ansible_ssh_host=192.168.2.100

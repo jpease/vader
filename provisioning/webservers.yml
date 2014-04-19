@@ -1,8 +1,0 @@
----
-- hosts: webservers
-  user: vagrant 
-  sudo: yes
-
-  roles:
-     - common
-     - web

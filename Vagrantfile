@@ -4,20 +4,21 @@
 Vagrant.configure("2") do |config|
 
 ## Web Server #########################
-  config.vm.define :web do |web_config|
+  config.vm.define :webserver do |web_config|
 
     web_config.vm.box = "ubuntu12.04"
     web_config.vm.box_url = "http://files.vagrantup.com/precise64_vmware.box"
-    web_config.vm.network :private_network, ip: "192.168.2.10"
+    web_config.vm.network "private_network", ip: "192.168.2.10"
 
     web_config.vm.provider "vmware_fusion" do |v|
-      v.vmx['displayName'] = 'web'
+      v.vmx['displayName'] = 'webserver'
       v.vmx["numvcpus"] = '1'
       v.vmx['memsize'] = '512'
     end
 
     web_config.vm.provision :ansible do |ansible|
-      ansible.playbook = "provisioning/webservers.yml"
+      ansible.inventory_path = "provisioning/ansible_hosts"
+      ansible.playbook = "provisioning/webserver.yml"
     end
   end
 
@@ -35,6 +36,7 @@ Vagrant.configure("2") do |config|
     end
 
     haproxy_config.vm.provision :ansible do |ansible|
+      ansible.inventory_path = "provisioning/ansible_hosts"
       ansible.playbook = "provisioning/haproxy.yml"
     end
   end
@@ -62,9 +64,30 @@ app_hosts = {
         v.vmx['memsize'] = '512'
       end
 
-      app_ruby_config.vm.provision :ansible do |ansible|
+      app_ruby_config.vm.provision "ansible" do |ansible|
+        ansible.inventory_path = "provisioning/ansible_hosts"
         ansible.playbook = "provisioning/app_ruby.yml"
       end
     end
   end
+
+## PostgreSQL Server #########################
+  config.vm.define :postgres do |postgres_config|
+
+    postgres_config.vm.box = "ubuntu12.04"
+    postgres_config.vm.box_url = "http://files.vagrantup.com/precise64_vmware.box"
+    postgres_config.vm.network :private_network, ip: "192.168.2.30"
+
+    postgres_config.vm.provider "vmware_fusion" do |v|
+      v.vmx['displayName'] = 'PostgreSQL'
+      v.vmx["numvcpus"] = '1'
+      v.vmx['memsize'] = '512'
+    end
+
+    postgres_config.vm.provision :ansible do |ansible|
+      ansible.inventory_path = "provisioning/ansible_hosts"
+      ansible.playbook = "provisioning/postgres.yml"
+    end
+  end
+  
 end

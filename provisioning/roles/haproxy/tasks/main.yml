@@ -1,6 +1,10 @@
 --- 
+- name: 'haproxy: Add PPA'
+  apt_repository: repo=ppa:vbernat/haproxy-1.4 state=present
+  tags: haproxy
+
 - name: 'haproxy: Present'
-  apt: pkg=haproxy state=present
+  apt: pkg=haproxy={{ haproxy_version }} state=present
   tags: haproxy
 
 - name: 'haproxy: Started'

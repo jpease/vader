@@ -20,9 +20,8 @@ frontend http-in
     default_backend ruby_servers
 
 backend ruby_servers
-{% for backend in groups['app_ruby'] %}
-    server {{ hostvars[backend]['ansible_hostname'] }} {{ hostvars[backend]['ansible_eth0']['ipv4']['address'] }}:3000 check port 3000
+
+{% for host in groups['app_ruby'] %}
+    server {{ hostvars[host]['inventory_hostname'] }} {{ hostvars[host]['ansible_ssh_host'] }}:3000 check port 3000
 {% endfor %}
     option httpchk HEAD / HTTP/1.0
-
-

@@ -1,14 +1,10 @@
 --- 
-  # Required for apt_repository
-- name: 'NGINX: Present python-software-properties'
-  apt:  pkg='python-software-properties' state=present
-
 - name: 'NGINX: Add PPA'
   apt_repository: repo=ppa:nginx/stable state=present
   tags: nginx
 
-- name: 'NGINX: Version 1.4.1 Present'
-  apt:  pkg=nginx=1.4.1-1ppa1~precise state=present
+- name: 'NGINX: Version {{ nginx_version }} Present'
+  apt:  pkg=nginx={{ nginx_version }} state=present
   tags: nginx
 
 - name: 'NGINX: Started'

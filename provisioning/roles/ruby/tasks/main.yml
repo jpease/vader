@@ -5,6 +5,7 @@
     - sqlite3
     - libsqlite3-dev
     - nodejs # For execjs: https://github.com/sstephenson/execjs
+    - libpq-dev # For Postgres
 
 - name: 'rbenv: Update git repo'
   git: repo=git://github.com/sstephenson/rbenv.git dest={{ rbenv_root }} version={{ rbenv_version }}

@@ -1,0 +1,79 @@
+--- 
+
+- name: 'PostgreSQL: Update hostname'
+  copy: dest=/etc/hostname 
+        content='postgreSQL'
+  tags: postgres
+
+  # Required for recent Postgresql releases
+- name: 'PostgreSQL: Import the PGDG APT repository key'
+  shell: wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
+  tags: postgres
+
+  # Required for Ansible PostgreSQL Module
+- name: 'PostgreSQL: Present ligpq-dev'
+  apt: pkg='libpq-dev' 
+       state=latest
+
+  # Required for Ansible PostgreSQL Module
+- name: 'PosgreSQL: Present python-psycopg2'
+  apt: pkg='python-psycopg2' 
+       state=present
+
+- name: 'PostgreSQL: Add PostgreSQL Global Development Group (PGDG) APT repository'
+  copy: dest=/etc/apt/sources.list.d/pgdg.list 
+        owner=root 
+        group=root 
+        mode=0644 
+        content="deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main"
+  tags: postgres
+
+- name: 'PostgreSQL: Version {{ postgres_version }} Present'
+  apt:  pkg=postgresql-{{ postgres_version }} 
+        state=present 
+        update_cache=yes
+  tags: postgres
+
+- name: 'PostgreSQL: Listen on all IP addresses'
+  copy: src=postgresql.conf 
+        dest=/etc/postgresql/{{ postgres_version }}/main/postgresql.conf 
+        owner=postgres 
+        group=postgres 
+        mode=644 
+        backup=yes
+  notify:
+    - 'Restart PostgreSQL'
+  tags: postgres
+
+- name: 'PostgreSQL: Allow remote connections'
+  copy: src=pg_hba.conf 
+        dest=/etc/postgresql/{{ postgres_version }}/main/pg_hba.conf 
+        owner=postgres 
+        group=postgres 
+        mode=640 
+        backup=yes
+  notify:
+    - 'Restart PostgreSQL'
+  tags: postgres
+
+- name: 'PostgreSQL: Started'
+  service: name=postgresql 
+           state=started 
+  tags: postgres
+
+- name: 'PostgreSQL: Enable at Boot'
+  service: name=postgresql
+           enabled=yes
+           state=started 
+
+- name: 'PostgreSQL: Create Demo DB'
+  postgresql_db: name=test
+                 encoding=UTF8 
+                 state=present
+  sudo_user: postgres
+
+- name: 'PostgreSQL: Create Demo User'
+  postgresql_user: name=tester 
+                   db=test 
+                   password=insecure
+  sudo_user: postgres

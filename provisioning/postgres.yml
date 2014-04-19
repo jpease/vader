@@ -1,0 +1,12 @@
+---
+- hosts: postgres
+  user: vagrant 
+  sudo: yes
+  #sudo_user: postgres
+
+  vars:
+    - postgres_version: 9.3
+
+  roles:
+     - common
+     - postgres

@@ -9,10 +9,11 @@ vader
 
 Spin up a stack for development that is similar to what might be used in production.
 
-Right now the stack just consists of:
+Right now the stack consists of:
 
 * NGINX 1.4.7
 * Haproxy 1.4.25
+* PostgreSQL 9.3
 * Ruby 2.1 (via rbenv & ruby-build)
 * Rails 4.1
 
@@ -44,8 +45,9 @@ Edit `/etc/hosts` on your local development machine:
 
 1. `vagrant up app_ruby_1 --provider=vmware_fusion`
 2. `vagrant up app_ruby_2 --provider=vmware_fusion`
-3. `vagrant up haproxy --provider=vmware_fusion`
-4. `vagrant up web --provider=vmware_fusion`
+3. `vagrant up postgres --provider=vmware_fusion`
+4. `vagrant up haproxy --provider=vmware_fusion`
+5. `vagrant up web --provider=vmware_fusion`
 
 You should let both of the app servers finish starting up before starting HAproxy, as it will need to pull information from them.
 
@@ -88,6 +90,12 @@ And...
 * Listening on port 80 & 8080
 * Port 80 services HAProxy's stats UI
 * Port 8080 is balanced out to the 2 app servers.
+
+#### PostgreSQL
+
+* 192.168.2.30
+* Listening on port 5432
+* Will accept requests from app servers (configured in pg_hba.conf)
 
 #### App Server
 

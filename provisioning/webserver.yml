@@ -4,7 +4,7 @@
   sudo: yes
 
   vars:
-    - nginx_version: 1.4.7-1+precise0
+    - nginx_version: 1.4.7-1+trusty0
 
   roles:
      - common

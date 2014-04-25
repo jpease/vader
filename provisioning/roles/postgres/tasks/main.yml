@@ -25,7 +25,7 @@
         owner=root 
         group=root 
         mode=0644 
-        content="deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main"
+        content="deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main"
   tags: postgres
 
 - name: 'PostgreSQL: Version {{ postgres_version }} Present'

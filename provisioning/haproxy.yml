@@ -9,7 +9,7 @@
   sudo: yes
 
   vars:
-    - haproxy_version: 1.4.25-1ppa1~precise
+    - haproxy_version: 1.4.24-2
 
   roles:
      - common

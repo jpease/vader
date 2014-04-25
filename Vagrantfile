@@ -6,8 +6,7 @@ Vagrant.configure("2") do |config|
 ## Web Server #########################
   config.vm.define :webserver do |web_config|
 
-    web_config.vm.box = "ubuntu12.04"
-    web_config.vm.box_url = "http://files.vagrantup.com/precise64_vmware.box"
+    web_config.vm.box = "jpease/ubuntu-trusty"
     web_config.vm.network "private_network", ip: "192.168.2.10"
 
     web_config.vm.provider "vmware_fusion" do |v|
@@ -25,8 +24,7 @@ Vagrant.configure("2") do |config|
 ## HAProxy ############################
    config.vm.define :haproxy do |haproxy_config|
 
-    haproxy_config.vm.box = "ubuntu12.04"
-    haproxy_config.vm.box_url = "http://files.vagrantup.com/precise64_vmware.box"
+    haproxy_config.vm.box = "jpease/ubuntu-trusty"
     haproxy_config.vm.network :private_network, ip: "192.168.2.20"
 
     haproxy_config.vm.provider "vmware_fusion" do |v|
@@ -52,8 +50,7 @@ app_hosts = {
       ip = "192.168.2.1"+id
       port = "30"+id
 
-      app_ruby_config.vm.box = "ubuntu12.04"
-      app_ruby_config.vm.box_url = "http://files.vagrantup.com/precise64_vmware.box"
+      app_ruby_config.vm.box = "jpease/ubuntu-trusty"
       app_ruby_config.vm.network :private_network, ip: ip
       app_ruby_config.vm.network :forwarded_port, guest: 3000, host: port 
       app_ruby_config.vm.synced_folder "../", "/srv/www"
@@ -74,8 +71,7 @@ app_hosts = {
 ## PostgreSQL Server #########################
   config.vm.define :postgres do |postgres_config|
 
-    postgres_config.vm.box = "ubuntu12.04"
-    postgres_config.vm.box_url = "http://files.vagrantup.com/precise64_vmware.box"
+    postgres_config.vm.box = "jpease/ubuntu-trusty"
     postgres_config.vm.network :private_network, ip: "192.168.2.30"
 
     postgres_config.vm.provider "vmware_fusion" do |v|

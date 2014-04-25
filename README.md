@@ -12,7 +12,7 @@ Spin up a stack for development that is similar to what might be used in product
 Right now the stack consists of:
 
 * NGINX 1.4.7
-* Haproxy 1.4.25
+* Haproxy 1.4.24
 * PostgreSQL 9.3
 * Ruby 2.1 (via rbenv & ruby-build)
 * Rails 4.1
@@ -57,6 +57,21 @@ You should let both of the app servers finish starting up before starting HAprox
     $ cd /srv/www/
     $ rails new rails_test
     
+#### Update your `config/database.yml` 
+ 
+    default: &default
+        adapter: postgresql
+        pool: 5
+        timeout: 5000
+    
+    development:
+        <<: *default
+        host: 192.168.2.30
+        port: 5432
+        database: test
+        username: tester
+        password: insecure
+
 #### Start Your Rails App
 
     vagrant ssh app_ruby_1
@@ -100,5 +115,4 @@ And...
 #### App Server
 
 * 192.168.2.100 & 192.168.2.101
-* Right now just webrick for proof of concept
 * Webrick listens on port 3000
